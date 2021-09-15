@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Епз лр1.1. Харченко ПІ-421</title>
+	<style>
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background: burlywood;
+			font-family: monospace;
+		}
+
+		h1,
+		h2 {
+			text-align: center;
+		}
+
+		h2 {
+			margin-top: 0;
+			color: rgb(77, 35, 11);
+		}
+
+		main {
+			width: 500px;
+			margin: 0 auto;
+			padding: 1.5em;
+			border-radius: 10px;
+			background: white;
+		}
+
+		.container {
+			display: flex;
+
+		}
+
+		select,
+		input {
+			display: block;
+		}
+
+		button {
+			border: none;
+			border-radius: 4px;
+			background: chocolate;
+			color: white;
+			padding: 10px 12px;
+			transition: color 0.3s;
+		}
+
+		table {
+			border-spacing: 10px;
+		}
+
+		button:hover {
+			background: rgb(122, 61, 16);
+		}
+
+		.result {
+			font-size: 20px;
+			line-height: 26px;
+			color: chocolate;
+			font-weight: 700;
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<h1>LW 1.1, Daryna Kharchenko PI-421</h1>
+	</header>
+	<main>
+		<h2>Calculator СОСОМО</h2>
+		<div>
+			<div class="container">
+				<table>
+					<tr>
+						<td>
+							<div>Project type:</span>
+								<select name="type" id="type">
+									<option value="organic">organic</option>
+									<option value="semidetached">semidetached</option>
+									<option value="embedded">embedded</option>
+								</select>
+						</td>
+						<td>
+							Efforts:
+							<span class="pm-result result"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div> KSLOC (thousands):</span>
+								<input type="number" name="ksloc" id="ksloc" value="1" min="1" oninput="validity.valid||(value='');">
+						</td>
+						<td>
+							Time to develop:
+							<span class="tm-result result"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button onclick="calculate()">Calculate</button>
+						</td>
+						<td>
+							Persons to develop:
+							<span class="ss-result result"></span>
+						</td>
+					</tr>
+				</table>
+
+			</div>
+
+		</div>
+	</main>
+
+	<script>
+		const organic = [2.4, 1.05, 2.5, 0.38];
+		const semidetached = [3, 1.12, 2.5, 0.35];
+		const embedded = [3.6, 1.2, 2.5, 0.32];
+
+		function getCoefficients(type) {
+			let result = null;
+			switch (type.toLowerCase()) {
+				case "organic":
+					result = organic;
+					break;
+				case "semidetached":
+					result = semidetached;
+					break;
+				case "embedded":
+					result = embedded;
+					break;
+			}
+			return result;
+		}
+
+		function calcPM({ a, b, ksloc }) {
+			return a * Math.pow(ksloc, b);
+		}
+
+		function calcTM({ c, d, PM }) {
+			return c * Math.pow(PM, d);
+		}
+
+		function calculate() {
+			const type = document.querySelector("#type").value;
+			const ksloc = Number(document.querySelector("#ksloc").value);
+			const coefficients = getCoefficients(type);
+			const PM_result = calcPM({
+				a: coefficients[0],
+				b: coefficients[1],
+				ksloc,
+			}).toFixed(2);
+			const TM_result = calcTM({
+				c: coefficients[2],
+				d: coefficients[3],
+				PM: PM_result,
+			}).toFixed(2);
+			const SS_result = (PM_result / TM_result).toFixed(2);
+
+			document.querySelector(".pm-result").innerHTML = PM_result;
+			document.querySelector(".tm-result").innerHTML = TM_result;
+			document.querySelector(".ss-result").innerHTML = SS_result;
+		}
+
+	</script>
+</body>
+
+</html>
